@@ -1,6 +1,7 @@
 %w[post memo link task].each do |file|
   require_relative file
 end
+require 'pry-byebug'
 
 # Будем обрабатывать параметры командной строки по-взрослому с помощью
 # специальной библиотеки optparse
@@ -32,13 +33,14 @@ OptionParser.new do |opt|
   opt.on('--limit NUMBER', 'сколько последних постов показать ' \
          '(по умолчанию все)') { |o| options[:limit] = o }
 
-  # В конце у только что созданного объекта класс OptionParser вызываем
+  # В конце у только что созданного объекта класса OptionParser вызываем
   # метод parse, чтобы он заполнил наш хэш options в соответствии с правилами.
 end.parse!
 
 # Вызываем метод find класса Post, который найдет нам нужные записи в
 # соответствии с запросом. Записываем то, что он вернет в переменную result.
-result = Post.find(options[:limit], options[:type], options[:id])
+# result = Post.find(options[:limit], options[:type], options[:id])
+result = Post.find(options)
 
 if result.is_a? Post
   # Если результат — это один объект класса Post, значит выводим его
@@ -60,7 +62,7 @@ else
 
   # Теперь для каждой строки из результатов выведем её в нужном формате
   # Используем safe навигацию, учитывая возможное значение nil для result
-  result&.each do |row|
+  result.each do |row|
     # Начинаем с пустой строки
     puts
 

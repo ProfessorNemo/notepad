@@ -1,5 +1,4 @@
-# Подключим встроенный в руби класс Date для работы с датами
-require "date"
+require 'date'
 
 # Класс «Задача», разновидность базового класса «Запись»
 class Task < Post
@@ -11,7 +10,7 @@ class Task < Post
     # Создаем специфичную для ссылки переменную экземпляра @due_date — время, к
     # которому задачу нужно выполнить
     @due_date = Time.now
-    @event = "deadline"
+    @event = 'deadline'
   end
 
   # Напишем реализацию метода read_from_console для экземпляра задачи. Он
@@ -20,14 +19,14 @@ class Task < Post
   def read_from_console
     # Спросим у пользователя, что нужно сделать и запишем его ответ (строку) в
     # переменную экземпляра класса Задача @text.
-    puts "Что надо сделать?"
+    puts 'Что надо сделать?'
     @text = STDIN.gets.chomp
 
     # Спросим у пользователя, до какого числа ему нужно выполнить задачу и
     # подскажем формат, в котором нужно вводить дату. А потом запишем его ответ
     # в локальную переменную input.
-    puts "К какому числу? Укажите дату в формате ДД.ММ.ГГГГ, " \
-         "например 12.05.2003"
+    puts 'К какому числу? Укажите дату в формате ДД.ММ.ГГГГ, ' \
+         'например 12.05.2003'
     input = STDIN.gets.chomp
 
     # Для того, чтобы из строки получить объект класса Date, с которым очень
@@ -40,32 +39,32 @@ class Task < Post
   # сколько времени осталось до нужной даты. Этот метод дает обратный отсчет дней,
   # часов, минут и секунд до запланированного события:
   def remaining
-    return_data = @due_date.strftime("%d.%m.%Y")
-    reverse_data = return_data.split(".").map(&:to_i).reverse
+    return_data = @due_date.strftime('%d.%m.%Y')
+    reverse_data = return_data.split('.').map(&:to_i).reverse
 
     date = DateTime.new(reverse_data[0], reverse_data[1], reverse_data[2], DateTime.now.offset)
 
-    intervals = [["day", 1], ["hour", 24], ["minute", 60], ["second", 60]]
+    intervals = [['day', 1], ['hour', 24], ['minute', 60], ['second', 60]]
 
     elapsed = DateTime.now - date
-    tense = elapsed > 0 ? "since" : "until"
+    tense = elapsed > 0 ? 'since' : 'until'
 
     interval = 1.0
     parts = intervals.collect do |name, new_interval|
       interval /= new_interval
       number, elapsed = elapsed.abs.divmod(interval)
-      "#{number.to_i} #{name}#{"s" unless number == 1}"
+      "#{number.to_i} #{name}#{'s' unless number == 1}"
     end
 
-    "#{parts.join(", ")} #{tense} #{@event}."
+    "#{parts.join(', ')} #{tense} #{@event}."
   end
 
   # Метод to_string должен вернуть все строки, которые мы хотим записать в
   # файл при записи нашей задачи: строку с дедлайном, описание задачи и дату
   # создания задачи.
   def to_strings
-    deadline = "Крайний срок: #{@due_date.strftime("%Y.%m.%d")}"
-    time_string = "Создано: #{@created_at.strftime("%Y.%m.%d, %H:%M:%S")} \n"
+    deadline = "Крайний срок: #{@due_date.strftime('%Y.%m.%d')}"
+    time_string = "Создано: #{@created_at.strftime('%Y.%m.%d, %H:%M:%S')} \n"
 
     [deadline, remaining, @text, time_string]
   end
@@ -75,7 +74,7 @@ class Task < Post
     # Вызываем родительский метод to_db_hash ключевым словом super. К хэшу,
     # который он вернул добавляем специфичные для этого класса поля методом
     # Hash#merge
-    super.merge("text" => @text, "due_date" => @due_date.to_s)
+    super.merge('text' => @text, 'due_date' => @due_date.to_s)
   end
 
   # Метод load_data у Задачи считывает дополнительно due_date задачи
@@ -86,6 +85,6 @@ class Task < Post
     super
 
     # Теперь достаем из хэша специфичное только для задачи значение due_date
-    @due_date = Date.parse(data_hash["due_date"])
+    @due_date = Date.parse(data_hash['due_date'])
   end
 end
