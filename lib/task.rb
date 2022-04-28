@@ -1,5 +1,4 @@
 require 'date'
-
 # Класс «Задача», разновидность базового класса «Запись»
 class Task < Post
   # Конструктор у класса «Задача» свой, но использует конструктор родителя.
@@ -20,14 +19,14 @@ class Task < Post
     # Спросим у пользователя, что нужно сделать и запишем его ответ (строку) в
     # переменную экземпляра класса Задача @text.
     puts 'Что надо сделать?'
-    @text = STDIN.gets.chomp
+    @text = $stdin.gets.chomp
 
     # Спросим у пользователя, до какого числа ему нужно выполнить задачу и
     # подскажем формат, в котором нужно вводить дату. А потом запишем его ответ
     # в локальную переменную input.
     puts 'К какому числу? Укажите дату в формате ДД.ММ.ГГГГ, ' \
          'например 12.05.2003'
-    input = STDIN.gets.chomp
+    input = $stdin.gets.chomp
 
     # Для того, чтобы из строки получить объект класса Date, с которым очень
     # удобно работать (например, можно вычислить, сколько осталось дней до
@@ -47,7 +46,7 @@ class Task < Post
     intervals = [['day', 1], ['hour', 24], ['minute', 60], ['second', 60]]
 
     elapsed = DateTime.now - date
-    tense = elapsed > 0 ? 'since' : 'until'
+    tense = elapsed.positive? ? 'since' : 'until'
 
     interval = 1.0
     parts = intervals.collect do |name, new_interval|
@@ -65,7 +64,6 @@ class Task < Post
   def to_strings
     deadline = "Крайний срок: #{@due_date.strftime('%Y.%m.%d')}"
     time_string = "Создано: #{@created_at.strftime('%Y.%m.%d, %H:%M:%S')} \n"
-
     [deadline, remaining, @text, time_string]
   end
 
@@ -74,7 +72,7 @@ class Task < Post
     # Вызываем родительский метод to_db_hash ключевым словом super. К хэшу,
     # который он вернул добавляем специфичные для этого класса поля методом
     # Hash#merge
-    super.merge('text' => @text, 'due_date' => @due_date.to_s)
+    super.merge('text' => @text, 'due_date' => remaining)
   end
 
   # Метод load_data у Задачи считывает дополнительно due_date задачи

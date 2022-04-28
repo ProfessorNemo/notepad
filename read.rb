@@ -1,7 +1,10 @@
-%w[post memo link task].each do |file|
+PW = 'lib/'.freeze
+%W[#{PW}post #{PW}memo #{PW}link #{PW}task].each do |file|
   require_relative file
 end
-require 'pry-byebug'
+
+# количество символов, выделяемых по д ячейку впри выводе базы в консоль
+CHARACTERS = 25
 
 # Будем обрабатывать параметры командной строки по-взрослому с помощью
 # специальной библиотеки optparse
@@ -52,13 +55,13 @@ else
   # Если результат — это не один пост, а сразу несколько, показываем таблицу
 
   # Сначала — напечатаем шапку таблицы с названиями полей
-  print '| id                 '
-  print '| @type              '
-  print '| @created_at        '
-  print '| @text              '
-  print '| @url               '
-  print '| @due_date          '
-  print '|'
+  print '| id'.to_s.ljust(CHARACTERS)
+  print '| @type'.to_s.ljust(CHARACTERS)
+  print '| @created_at'.to_s.ljust(CHARACTERS)
+  print '| @text'.to_s.ljust(CHARACTERS)
+  print '| @url'.to_s.ljust(CHARACTERS)
+  print '| @due_date'.to_s.ljust(CHARACTERS)
+  print '|'.to_s.ljust(CHARACTERS)
 
   # Теперь для каждой строки из результатов выведем её в нужном формате
   # Используем safe навигацию, учитывая возможное значение nil для result
@@ -70,10 +73,10 @@ else
     row.each do |element|
       # С палкой перед ним и обрезая первые 18 символов для очень длинных строк.
       # Также удаляем символы переноса.
-      element_text = "| #{element.to_s.delete("\n")[0..17]}"
+      element_text = "| #{element.to_s.delete("\n")[0..CHARACTERS - 3]}"
 
       # Если текст элемента короткий, добавляем нужное количество пробелов
-      element_text << ' ' * (21 - element_text.size)
+      element_text << ' ' * (CHARACTERS - element_text.size)
 
       # Выводим текст элемента
       print element_text

@@ -16,11 +16,11 @@ class Link < Post
   def read_from_console
     # Спрашиваем у пользователя url ссылки и записываем в переменную @url
     puts 'Адрес ссылки (url):'
-    @url = STDIN.gets.chomp
+    @url = $stdin.gets.chomp
 
     # Спрашиваем у пользователя описание ссылки (одной строчки будет достаточно)
     puts 'Что за ссылка?'
-    @text = STDIN.gets.chomp
+    @text = $stdin.gets.chomp
   end
 
   # Метод to_string для ссылки возвращает массив из трех строк: адрес ссылки,
