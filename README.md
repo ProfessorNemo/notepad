@@ -16,7 +16,7 @@ SQL-запросам)
 
 1. Перенесите содержимое данного репозитория на свой компьютер
 ```
-git remote add origin git@github.com:ProfessorNemo/notepad.git
+git clone git@github.com:ProfessorNemo/notepad.git
 ```
 2. Чтобы запустить приложение в этой же директории
 следует воспользоваться следующими командами:
